@@ -1,0 +1,234 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Script" referent="RBX0">
+		<Properties>
+			<bool name="Disabled">false</bool>
+			<Content name="LinkedSource"><null></null></Content>
+			<string name="Name">Ragdoll death</string>
+			<ProtectedString name="Source">function enter(plyr)
+plyr.CharacterAdded:connect(function()
+print(&quot;Corpsifying...&quot;)
+local scrip = script.Corpse:clone()
+scrip.Disabled = false
+scrip.Parent = plyr.Character
+end)
+end
+
+game.Players.PlayerAdded:connect(enter)
+for i, v in pairs(game.Players:GetChildren()) do
+repeat wait() until v.Character 
+if v.Character:findFirstChild(&quot;Corpse&quot;) == nil then
+local scrip = script.Corpse:clone()
+scrip.Disabled = false
+scrip.Parent = v.Character
+enter(v)
+end
+end
+</ProtectedString>
+		</Properties>
+		<Item class="Script" referent="RBX1">
+			<Properties>
+				<bool name="Disabled">true</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Corpse</string>
+				<ProtectedString name="Source">Character = script.Parent
+Humanoid = Character.Humanoid
+Torso = Character.Torso
+
+function OnDeath()
+&#9;print(&quot;Death&quot;)
+&#9;local cleaner = script:findFirstChild(&quot;BodyCleanup&quot;)
+&#9;cleaner.Parent = nil
+&#9;cleaner.Disabled = false
+&#9;Character.archivable = true
+&#9;oldCharacter = Character
+&#9;Humanoid.MaxHealth = 0
+&#9;for i,v in pairs(oldCharacter.Head:GetChildren()) do
+&#9;if v:IsA(&quot;Sound&quot;) then
+&#9;v:Remove()
+&#9;end
+&#9;end
+&#9;Character = Character:Clone()
+&#9;Character.Parent = workspace
+&#9;Character.Name = &quot;&quot;
+&#9;Character:findFirstChild(&quot;Corpse&quot;):Remove()
+&#9;for i,v in pairs(oldCharacter:GetChildren()) do
+&#9;if v:IsA(&quot;BasePart&quot;) then
+&#9;v.CanCollide = false
+&#9;v.Transparency = 1
+&#9;end
+&#9;end
+&#9;Humanoid.Parent = nil
+&#9;cleaner.Parent = Character
+&#9;Torso = Character:findFirstChild(&quot;Torso&quot;)
+&#9;if Torso then
+&#9;&#9;local Head = Character:FindFirstChild(&quot;Head&quot;)
+&#9;&#9;if Head then
+&#9;&#9;&#9;local Neck = Instance.new(&quot;Weld&quot;)
+&#9;&#9;&#9;Neck.Name = &quot;Neck&quot;
+&#9;&#9;&#9;Neck.Part0 = Torso
+&#9;&#9;&#9;Neck.Part1 = Head
+&#9;&#9;&#9;Neck.C0 = CFrame.new(0, 1.5, 0)
+&#9;&#9;&#9;Neck.C1 = CFrame.new()
+&#9;&#9;&#9;Neck.Parent = Torso
+&#9;&#9;end
+&#9;&#9;local Limb = Character:FindFirstChild(&quot;Right Arm&quot;)
+&#9;&#9;if Limb then
+
+&#9;&#9;&#9;Limb.CFrame = Torso.CFrame * CFrame.new(1.5, 0, 0)
+&#9;&#9;&#9;local Joint = Instance.new(&quot;Glue&quot;)
+&#9;&#9;&#9;Joint.Name = &quot;RightShoulder&quot;
+&#9;&#9;&#9;Joint.Part0 = Torso
+&#9;&#9;&#9;Joint.Part1 = Limb
+&#9;&#9;&#9;Joint.C0 = CFrame.new(1.5, 0.5, 0, 0, 0, 1, 0, 1, 0, -1, -0, -0)
+&#9;&#9;&#9;Joint.C1 = CFrame.new(-0, 0.5, 0, 0, 0, 1, 0, 1, 0, -1, -0, -0)
+&#9;&#9;&#9;Joint.Parent = Torso
+
+&#9;&#9;&#9;local B = Instance.new(&quot;Part&quot;)
+&#9;&#9;&#9;B.TopSurface = 0
+&#9;&#9;&#9;B.BottomSurface = 0
+&#9;&#9;&#9;B.formFactor = &quot;Symmetric&quot;
+&#9;&#9;&#9;B.Size = Vector3.new(1, 1, 1)
+&#9;&#9;&#9;B.Transparency = 1
+&#9;&#9;&#9;B.CFrame = Limb.CFrame * CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;B.Parent = Character
+&#9;&#9;&#9;local W = Instance.new(&quot;Weld&quot;)
+&#9;&#9;&#9;W.Part0 = Limb
+&#9;&#9;&#9;W.Part1 = B
+&#9;&#9;&#9;W.C0 = CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;W.Parent = Limb
+
+&#9;&#9;end
+&#9;&#9;local Limb = Character:FindFirstChild(&quot;Left Arm&quot;)
+&#9;&#9;if Limb then
+
+&#9;&#9;&#9;Limb.CFrame = Torso.CFrame * CFrame.new(-1.5, 0, 0)
+&#9;&#9;&#9;local Joint = Instance.new(&quot;Glue&quot;)
+&#9;&#9;&#9;Joint.Name = &quot;LeftShoulder&quot;
+&#9;&#9;&#9;Joint.Part0 = Torso
+&#9;&#9;&#9;Joint.Part1 = Limb
+&#9;&#9;&#9;Joint.C0 = CFrame.new(-1.5, 0.5, 0, -0, -0, -1, 0, 1, 0, 1, 0, 0)
+&#9;&#9;&#9;Joint.C1 = CFrame.new(0, 0.5, 0, -0, -0, -1, 0, 1, 0, 1, 0, 0)
+&#9;&#9;&#9;Joint.Parent = Torso
+
+&#9;&#9;&#9;local B = Instance.new(&quot;Part&quot;)
+&#9;&#9;&#9;B.TopSurface = 0
+&#9;&#9;&#9;B.BottomSurface = 0
+&#9;&#9;&#9;B.formFactor = &quot;Symmetric&quot;
+&#9;&#9;&#9;B.Size = Vector3.new(1, 1, 1)
+&#9;&#9;&#9;B.Transparency = 1
+&#9;&#9;&#9;B.CFrame = Limb.CFrame * CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;B.Parent = Character
+&#9;&#9;&#9;local W = Instance.new(&quot;Weld&quot;)
+&#9;&#9;&#9;W.Part0 = Limb
+&#9;&#9;&#9;W.Part1 = B
+&#9;&#9;&#9;W.C0 = CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;W.Parent = Limb
+
+&#9;&#9;end
+&#9;&#9;local Limb = Character:FindFirstChild(&quot;Right Leg&quot;)
+&#9;&#9;if Limb then
+
+&#9;&#9;&#9;Limb.CFrame = Torso.CFrame * CFrame.new(0.5, -2, 0)
+&#9;&#9;&#9;local Joint = Instance.new(&quot;Glue&quot;)
+&#9;&#9;&#9;Joint.Name = &quot;RightHip&quot;
+&#9;&#9;&#9;Joint.Part0 = Torso
+&#9;&#9;&#9;Joint.Part1 = Limb
+&#9;&#9;&#9;Joint.C0 = CFrame.new(0.5, -1, 0, 0, 0, 1, 0, 1, 0, -1, -0, -0)
+&#9;&#9;&#9;Joint.C1 = CFrame.new(0, 1, 0, 0, 0, 1, 0, 1, 0, -1, -0, -0)
+&#9;&#9;&#9;Joint.Parent = Torso
+
+&#9;&#9;&#9;local B = Instance.new(&quot;Part&quot;)
+&#9;&#9;&#9;B.TopSurface = 0
+&#9;&#9;&#9;B.BottomSurface = 0
+&#9;&#9;&#9;B.formFactor = &quot;Symmetric&quot;
+&#9;&#9;&#9;B.Size = Vector3.new(1, 1, 1)
+&#9;&#9;&#9;B.Transparency = 1
+&#9;&#9;&#9;B.CFrame = Limb.CFrame * CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;B.Parent = Character
+&#9;&#9;&#9;local W = Instance.new(&quot;Weld&quot;)
+&#9;&#9;&#9;W.Part0 = Limb
+&#9;&#9;&#9;W.Part1 = B
+&#9;&#9;&#9;W.C0 = CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;W.Parent = Limb
+
+&#9;&#9;end
+&#9;&#9;local Limb = Character:FindFirstChild(&quot;Left Leg&quot;)
+&#9;&#9;if Limb then
+
+&#9;&#9;&#9;Limb.CFrame = Torso.CFrame * CFrame.new(-0.5, -2, 0)
+&#9;&#9;&#9;local Joint = Instance.new(&quot;Glue&quot;)
+&#9;&#9;&#9;Joint.Name = &quot;LeftHip&quot;
+&#9;&#9;&#9;Joint.Part0 = Torso
+&#9;&#9;&#9;Joint.Part1 = Limb
+&#9;&#9;&#9;Joint.C0 = CFrame.new(-0.5, -1, 0, -0, -0, -1, 0, 1, 0, 1, 0, 0)
+&#9;&#9;&#9;Joint.C1 = CFrame.new(-0, 1, 0, -0, -0, -1, 0, 1, 0, 1, 0, 0)
+&#9;&#9;&#9;Joint.Parent = Torso
+
+&#9;&#9;&#9;local B = Instance.new(&quot;Part&quot;)
+&#9;&#9;&#9;B.TopSurface = 0
+&#9;&#9;&#9;B.BottomSurface = 0
+&#9;&#9;&#9;B.formFactor = &quot;Symmetric&quot;
+&#9;&#9;&#9;B.Size = Vector3.new(1, 1, 1)
+&#9;&#9;&#9;B.Transparency = 1
+&#9;&#9;&#9;B.CFrame = Limb.CFrame * CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;B.Parent = Character
+&#9;&#9;&#9;local W = Instance.new(&quot;Weld&quot;)
+&#9;&#9;&#9;W.Part0 = Limb
+&#9;&#9;&#9;W.Part1 = B
+&#9;&#9;&#9;W.C0 = CFrame.new(0, -0.5, 0)
+&#9;&#9;&#9;W.Parent = Limb
+
+&#9;&#9;end
+&#9;&#9;--[
+&#9;&#9;local Bar = Instance.new(&quot;Part&quot;)
+&#9;&#9;Bar.TopSurface = 0
+&#9;&#9;Bar.BottomSurface = 0
+&#9;&#9;Bar.formFactor = &quot;Symmetric&quot;
+&#9;&#9;Bar.Size = Vector3.new(1, 1, 1)
+&#9;&#9;Bar.Transparency = 1
+&#9;&#9;Bar.CFrame = Torso.CFrame * CFrame.new(0, 0.5, 0)
+&#9;&#9;Bar.Parent = Character
+&#9;&#9;local Weld = Instance.new(&quot;Weld&quot;)
+&#9;&#9;Weld.Part0 = Torso
+&#9;&#9;Weld.Part1 = Bar
+&#9;&#9;Weld.C0 = CFrame.new(0, 0.5, 0)
+&#9;&#9;Weld.Parent = Torso
+&#9;&#9;--]]
+&#9;end
+&#9;wait(3)
+&#9;Character:Remove()
+end
+
+Humanoid.Died:connect(OnDeath)
+</ProtectedString>
+			</Properties>
+			<Item class="Script" referent="RBX2">
+				<Properties>
+					<bool name="Disabled">true</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">BodyCleanup</string>
+					<ProtectedString name="Source">wait(800)
+script.Parent.Parent = nil
+</ProtectedString>
+				</Properties>
+			</Item>
+			<Item class="LocalScript" referent="RBX3">
+				<Properties>
+					<bool name="Disabled">true</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">CamAttach</string>
+					<ProtectedString name="Source">wait()
+game.Workspace.CurrentCamera.CameraSubject = script.CamPart.Value</ProtectedString>
+				</Properties>
+				<Item class="ObjectValue" referent="RBX4">
+					<Properties>
+						<string name="Name">CamPart</string>
+						<Ref name="Value">null</Ref>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+	</Item>
+</roblox>
