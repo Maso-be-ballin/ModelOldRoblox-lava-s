@@ -1,0 +1,7 @@
+{
+	"Name": "Offline Dance Potions",
+	"Description": "Offline loading of ROBLOX Potions, that make you move!",
+	"Author": "orange_lava, ROBLOX",
+	"Version": "1.0",
+	"Clients": ["2010L-2013L"]
+}
